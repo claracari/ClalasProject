@@ -3,47 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipe Book - Home</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Recipe Title - RecipeApp</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <header>
-        <nav class="navbar">
-            <h1 class="logo">🍳 Chef's Notebook</h1>
-            <ul class="nav-links">
-                <li><a href="index.html" class="active">Home</a></li>
-                <li><a href="recipes.html">Recipes</a></li>
-                <li><a href="submit.html">Upload Recipe</a></li>
-                <li><a href="#login" class="btn-login">Login / Sign Up</a></li>
+        <nav>
+            <a href="index.html" class="logo">🍳 RecipeApp</a>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="browse.html">Browse</a></li>
+                <li><a href="profile.html">Profile</a></li>
             </ul>
         </nav>
     </header>
 
-    <main>
-        <section class="hero">
-            <h2>Discover, Create, and Share Your Favorite Recipes</h2>
-            <p>Your personal digital cookbook. Save recipes, build shopping lists, and share your culinary creations with the world.</p>
-            <a href="recipes.html" class="btn-primary">Browse Recipes</a>
+    <main class="recipe-container">
+        <h1>Delicious Chocolate Chip Cookies</h1>
+        <img src="images/cookies.jpg" alt="Chocolate chip cookies" class="recipe-image">
+        
+        <section class="recipe-meta">
+            <p><strong>Prep Time:</strong> 15 mins</p>
+            <p><strong>Cook Time:</strong> 10 mins</p>
+            <p><strong>Servings:</strong> 12 cookies</p>
         </section>
 
-        <section class="features">
-            <div class="feature-card">
-                <h3>🛒 Smart Shopping List</h3>
-                <p>Coming soon: Automatically generate shopping lists from your chosen recipes.</p>
-            </div>
-            <div class="feature-card">
-                <h3>📚 Custom Collections</h3>
-                <p>Coming soon: Organize your recipes into personalized digital cookbooks.</p>
-            </div>
-            <div class="feature-card">
-                <h3>⭐ Ratings & Comments</h3>
-                <p>Coming soon: Engage with other food lovers by rating and reviewing dishes.</p>
-            </div>
+        <section class="ingredients">
+            <h2>Ingredients</h2>
+            <ul>
+                <li>1 cup butter, softened</li>
+                <li>1 cup white sugar</li>
+                <li>2 eggs</li>
+                <li>2 cups all-purpose flour</li>
+            </ul>
+        </section>
+
+        <section class="instructions">
+            <h2>Instructions</h2>
+            <ol>
+                <li>Preheat oven to 350°F (175°C).</li>
+                <li>Cream together butter and sugar until smooth.</li>
+                <li>Beat in eggs one at a time.</li>
+                <li>Stir in flour gradually, then fold in chocolate chips.</li>
+                <li>Bake for 10 minutes until golden brown.</li>
+            </ol>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2026 Chef's Notebook. Built for food enthusiasts.</p>
+        <p>&copy; 2026 RecipeApp. All rights reserved.</p>
     </footer>
+    <script src="js/script.js"></script>
 </body>
 </html>
