@@ -3,26 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - RecipeApp</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Recipe Book - Login</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="auth-body">
-    <div class="auth-container">
-        <h1>Welcome Back!</h1>
-        <form action="profile.html" method="GET">
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required placeholder="you@example.com">
-            </div>
-            
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required placeholder="••••••••">
-            </div>
+<body>
+    <header>
+        <nav class="navbar">
+            <h1 class="logo">🍳 Chef's Notebook</h1>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="recipes.html">Recipes</a></li>
+                <li><a href="submit.html">Upload Recipe</a></li>
+                <li><a href="login.html" class="btn-login active">Login / Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
 
-            <button type="submit" class="btn-primary">Log In</button>
-        </form>
-        <p class="auth-redirect">Don't have an account? <a href="signup.html">Sign up here</a>.</p>
-    </div>
+    <main class="container">
+        <div class="form-container auth-form">
+            <h2>Welcome Back</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                </div>
+
+                <div id="loginError" class="error-message" style="display: none;"></div>
+
+                <button type="submit" class="btn-primary full-width">Login</button>
+            </form>
+
+            <div class="auth-links">
+                <p><a href="reset-password.html">Forgot your password?</a></p>
+                <p>Don't have an account yet? <a href="signup.html">Sign Up</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Chef's Notebook.</p>
+    </footer>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+
+            // Retrieve registered users from localStorage (simulating server check)
+            const users = JSON.parse(localStorage.getItem('recipe_users')) || [];
+            const foundUser = users.find(u => u.email === email && u.password === password);
+
+            if (foundUser) {
+                // Successful login simulation
+                localStorage.setItem('currentUser', JSON.stringify({ email: foundUser.email }));
+                alert('Login successful!');
+                window.location.href = 'index.html';
+            } else {
+                // Check if email exists at all to give specific error or generic error
+                const emailExists = users.some(u => u.email === email);
+                errorDiv.style.display = 'block';
+                if (!emailExists) {
+                    errorDiv.innerHTML = 'This account has not been created yet. Please <a href="signup.html">sign up</a> first.';
+                } else {
+                    errorDiv.innerHTML = 'Incorrect password. <a href="reset-password.html">Reset your password?</a>';
+                }
+            }
+        });
+    </script>
 </body>
 </html>
