@@ -3,78 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipe Book - Login</title>
+    <title>Recipe Book - Login / Sign Up</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <header>
-        <nav class="navbar">
-            <h1 class="logo">🍳 Chef's Notebook</h1>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="recipes.html">Recipes</a></li>
-                <li><a href="submit.html">Upload Recipe</a></li>
-                <li><a href="login.html" class="btn-login active">Login / Sign Up</a></li>
-            </ul>
-        </nav>
-    </header>
+<body class="auth-page">
+    <!-- Full-screen gatekeeper container -->
+    <main class="auth-fullscreen-container">
+        <div class="form-container auth-box">
+            <div class="auth-header-logo">
+                <h1 class="logo">🍳 Chef's Notebook</h1>
+                <p>Please log in or create an account to access your digital cookbook.</p>
+            </div>
 
-    <main class="container">
-        <div class="form-container auth-form">
-            <h2>Welcome Back</h2>
-            <form id="loginForm">
+            <!-- Tabs to switch between Login and Sign Up -->
+            <div class="auth-tabs">
+                <button type="button" id="loginTabBtn" class="tab-btn active" onclick="switchTab('login')">Login</button>
+                <button type="button" id="signupTabBtn" class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form id="loginForm" class="auth-form-panel">
                 <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" name="email" placeholder="your@email.com" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" name="password" placeholder="••••••••" required>
                 </div>
 
                 <div id="loginError" class="error-message" style="display: none;"></div>
 
                 <button type="submit" class="btn-primary full-width">Login</button>
+                
+                <div class="auth-links">
+                    <p><a href="reset-password.html">Forgot your password?</a></p>
+                </div>
             </form>
 
-            <div class="auth-links">
-                <p><a href="reset-password.html">Forgot your password?</a></p>
-                <p>Don't have an account yet? <a href="signup.html">Sign Up</a></p>
-            </div>
+            <!-- SIGN UP FORM -->
+            <form id="signupForm" class="auth-form-panel" style="display: none;">
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" name="email" placeholder="your@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" name="password" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="password-match-wrapper">
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required>
+                        <span id="matchIndicator" class="match-dot"></span>
+                    </div>
+                </div>
+
+                <div id="signupError" class="error-message" style="display: none;"></div>
+
+                <button type="submit" id="submitBtn" class="btn-primary full-width" disabled>Create Account</button>
+            </form>
         </div>
     </main>
 
-    <footer>
-        <p>&copy; 2026 Chef's Notebook.</p>
-    </footer>
-
     <script>
+        // If user is already logged in, send them straight to home page
+        if (localStorage.getItem('currentUser')) {
+            window.location.href = 'index.html';
+        }
+
+        // Tab switching logic
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const loginTabBtn = document.getElementById('loginTabBtn');
+            const signupTabBtn = document.getElementById('signupTabBtn');
+
+            if (tab === 'login') {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                loginTabBtn.classList.add('active');
+                signupTabBtn.classList.remove('active');
+            } else {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+                signupTabBtn.classList.add('active');
+                loginTabBtn.classList.remove('active');
+            }
+        }
+
+        // Login Handler
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
             const errorDiv = document.getElementById('loginError');
 
-            // Retrieve registered users from localStorage (simulating server check)
             const users = JSON.parse(localStorage.getItem('recipe_users')) || [];
             const foundUser = users.find(u => u.email === email && u.password === password);
 
             if (foundUser) {
-                // Successful login simulation
                 localStorage.setItem('currentUser', JSON.stringify({ email: foundUser.email }));
-                alert('Login successful!');
                 window.location.href = 'index.html';
             } else {
-                // Check if email exists at all to give specific error or generic error
                 const emailExists = users.some(u => u.email === email);
                 errorDiv.style.display = 'block';
                 if (!emailExists) {
-                    errorDiv.innerHTML = 'This account has not been created yet. Please <a href="signup.html">sign up</a> first.';
+                    errorDiv.innerHTML = 'This account has not been created yet. Please <a href="#" onclick="switchTab(\'signup\'); return false;">sign up</a> first.';
                 } else {
                     errorDiv.innerHTML = 'Incorrect password. <a href="reset-password.html">Reset your password?</a>';
                 }
             }
+        });
+
+        // Signup Validation & Handler
+        const passwordInput = document.getElementById('signupPassword');
+        const confirmInput = document.getElementById('confirmPassword');
+        const matchIndicator = document.getElementById('matchIndicator');
+        const submitBtn = document.getElementById('submitBtn');
+        const signupError = document.getElementById('signupError');
+
+        function validatePasswords() {
+            const pass = passwordInput.value;
+            const confirmPass = confirmInput.value;
+
+            if (pass === '' && confirmPass === '') {
+                matchIndicator.className = 'match-dot';
+                submitBtn.disabled = true;
+                return;
+            }
+
+            if (pass === confirmPass) {
+                matchIndicator.className = 'match-dot green';
+                submitBtn.disabled = false;
+                signupError.style.display = 'none';
+            } else {
+                matchIndicator.className = 'match-dot red';
+                submitBtn.disabled = true;
+            }
+        }
+
+        passwordInput.addEventListener('input', validatePasswords);
+        confirmInput.addEventListener('input', validatePasswords);
+
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = passwordInput.value;
+
+            let users = JSON.parse(localStorage.getItem('recipe_users')) || [];
+            
+            if (users.some(u => u.email === email)) {
+                signupError.style.display = 'block';
+                signupError.textContent = 'An account with this email already exists.';
+                return;
+            }
+
+            users.push({ email, password });
+            localStorage.setItem('recipe_users', JSON.stringify(users));
+
+            // Automatically log in and enter site
+            localStorage.setItem('currentUser', JSON.stringify({ email }));
+            window.location.href = 'index.html';
         });
     </script>
 </body>

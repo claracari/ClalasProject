@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipe Book - Upload Recipe</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        if (!localStorage.getItem('currentUser')) {
+            window.location.href = 'login.html';
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -14,7 +19,7 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="recipes.html">Recipes</a></li>
                 <li><a href="submit.html" class="active">Upload Recipe</a></li>
-                <li><a href="login.html" class="btn-login">Login / Sign Up</a></li>
+                <li><button onclick="logout()" class="btn-logout">Logout</button></li>
             </ul>
         </nav>
     </header>
@@ -51,5 +56,12 @@
     <footer>
         <p>&copy; 2026 Chef's Notebook.</p>
     </footer>
+
+    <script>
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+    </script>
 </body>
 </html>

@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipe Book - Home</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        // Gatekeeper check: If user is not logged in, redirect to login page immediately
+        if (!localStorage.getItem('currentUser')) {
+            window.location.href = 'login.html';
+        }
+    </script>
 </head>
 <body>
     <header>
@@ -14,7 +20,7 @@
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="recipes.html">Recipes</a></li>
                 <li><a href="submit.html">Upload Recipe</a></li>
-                <li><a href="login.html" class="btn-login">Login / Sign Up</a></li>
+                <li><button onclick="logout()" class="btn-logout">Logout</button></li>
             </ul>
         </nav>
     </header>
@@ -45,5 +51,12 @@
     <footer>
         <p>&copy; 2026 Chef's Notebook. Built for food enthusiasts.</p>
     </footer>
+
+    <script>
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+    </script>
 </body>
 </html>
